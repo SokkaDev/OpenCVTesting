@@ -9,12 +9,17 @@ int main( int argc, char** argv ) {
   
   VideoCapture capture;
 
-    ///0 öffnet die default cam
-
     
 
-  cvNamedWindow("Frame");
-  moveWindow("Frame",1500,2000);
+    
+    // Window Name --> Frame 
+    // --> every other image function should work on Frame
+    // --> have to put Frame in a variable
+
+    cvNamedWindow("Frame");
+    moveWindow("Frame",1500,2000);
+
+    ///0 öffnet die default cam
     if(!capture.open(0))
         return 0;
     for(;;)
