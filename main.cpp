@@ -1,5 +1,6 @@
 #include <opencv2/highgui.hpp>
 #include <iostream>
+#include <string>
 
 using namespace cv;
 
@@ -10,10 +11,10 @@ int main( int argc, char** argv ) {
 
     ///0 öffnet die default cam
 
-    string windowname="Test";
+    
 
-  cvNamedWindow(windowname);
-  moveWindow(windowname,1500,2000);
+  cvNamedWindow("Frame");
+  moveWindow("Frame",1500,2000);
     if(!capture.open(0))
         return 0;
     for(;;)
@@ -23,7 +24,7 @@ int main( int argc, char** argv ) {
           
           
           if( frame.empty() ) break; // Ende vom stream
-          imshow(windowname, frame);
+          imshow("Frame", frame);
           
           if( waitKey(10) == 27 ) break; // Stopp über Escape
     }
