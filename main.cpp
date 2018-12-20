@@ -1,42 +1,96 @@
-#include <opencv2/highgui.hpp>
-#include <iostream>
-#include <string>
-#include "opencv2/objdetect/objdetect.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/objdetect.hpp"
+#include "opencv2/highgui.hpp"
+#include "opencv2/imgproc.hpp"
 
+#include <iostream>
+using namespace std;
 using namespace cv;
 
-String eyes_cascade_name = "haarcascade_eye.xml";
+/** Function Headers */
+void detectAndDisplay( Mat frame );
+
+/** Global variables */
+String face_cascade_name = "haarcascade_frontalface_alt.xml";
+String eyes_cascade_name = "haarcascade_eye_tree_eyeglasses.xml";
+CascadeClassifier face_cascade;
 CascadeClassifier eyes_cascade;
 
-std::string window_name = "Test";
+//Window Title
+String window_name = "Frame";
 
 
-int main( int argc, char** argv ) {
-  
-  
+int main( void )
+{
 
-  VideoCapture capture;
-    // Window Name --> Frame 
-    // --> every other image function should work on Frame
-    // --> have to put Frame in a variable
+    VideoCapture capture;
+    Mat frame;
+
+
+    //Bildschirm Name
     const char * p = window_name.c_str();
     cvNamedWindow(p);
+
+    //Move Window right bottom
     moveWindow(p,1500,2000);
-//Resize Frame window --> geht noch nicht
-  cv::resizeWindow(window_name, 10, 20);
-    ///0 öffnet die default cam
-    if(!capture.open(0))
-        return 0;
-    for(;;)
+
+
+    //-- 1. Load the cascades
+    if( !face_cascade.load( face_cascade_name ) ){ cout << "--(!)Error loading face cascade\n"; return -1; };
+    if( !eyes_cascade.load( eyes_cascade_name ) ){ cout << "--(!)Error loading eyes cascade\n"; return -1; };
+
+    //-- 2. Read the video stream
+    capture.open( -1 );
+    if ( ! capture.isOpened() ) { cout << "--(!)Error opening video capture\n"; return -1; }
+
+    while (  capture.read(frame) )
     {
-          Mat frame;
-          capture >> frame;
-          if( frame.empty() ) break; // Ende vom stream
-          imshow(p, frame);
-          
-          if( waitKey(10) == 27 ) break; // Stopp über Escape
+        if( frame.empty() )
+        {
+            cout << " --(!) No captured frame -- Break!";
+            break;
+        }
+
+        //-- 3. Apply the classifier to the frame
+        detectAndDisplay( frame );
+
+        int c = waitKey(10);
+        if( (char)c == 27 ) { break; } // escape
     }
-  return 0;
+    return 0;
+}
+
+/* DetectAndDisplay*/
+void detectAndDisplay( Mat frame )
+{
+    std::vector<Rect> faces;
+    Mat frame_gray;
+
+    cvtColor( frame, frame_gray, COLOR_BGR2GRAY );
+    equalizeHist( frame_gray, frame_gray );
+
+    //Detect faces
+    face_cascade.detectMultiScale( frame_gray, faces, 1.1, 2, 0|CASCADE_SCALE_IMAGE, Size(30, 30) );
+
+    for( size_t i = 0; i < faces.size(); i++ )
+    {
+        Point center( faces[i].x + faces[i].width/2, faces[i].y + faces[i].height/2 );
+        ellipse( frame, center, Size( faces[i].width/2, faces[i].height/2), 0, 0, 360, Scalar( 255, 0, 255 ), 4, 8, 0 );
+
+        Mat faceROI = frame_gray( faces[i] );
+        std::vector<Rect> eyes;
+
+        // Filter eyes from face
+        eyes_cascade.detectMultiScale( faceROI, eyes, 1.1, 2, 0 |CASCADE_SCALE_IMAGE, Size(30, 30) );
+
+        for( size_t j = 0; j < eyes.size(); j++ )
+        {
+            Point eye_center( faces[i].x + eyes[j].x + eyes[j].width/2, faces[i].y + eyes[j].y + eyes[j].height/2 );
+            int radius = cvRound( (eyes[j].width + eyes[j].height)*0.25 );
+            circle( frame, eye_center, radius, Scalar( 255, 0, 0 ), 4, 8, 0 );
+            // WRITE WHAT SHOULD HAPPEN IF FACE WAS RECOGNIZED HERE
+            //-->
+        }
+    }
+    // Frame
+    imshow( window_name, frame );
 }
