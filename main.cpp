@@ -1,23 +1,26 @@
 #include <opencv2/highgui.hpp>
 #include <iostream>
 #include <string>
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
 using namespace cv;
 
+String eyes_cascade_name = "haarcascade_eye.xml";
+CascadeClassifier eyes_cascade;
+
+string window_name = "Frame";
 
 int main( int argc, char** argv ) {
   
   VideoCapture capture;
-
-    
-
-    
     // Window Name --> Frame 
     // --> every other image function should work on Frame
     // --> have to put Frame in a variable
-
-    cvNamedWindow("Frame");
-    moveWindow("Frame",1500,2000);
+    const char * p = window_name.c_str();
+    cvNamedWindow(p);
+    moveWindow(p,1500,2000);
 
     ///0 öffnet die default cam
     if(!capture.open(0))
@@ -26,10 +29,8 @@ int main( int argc, char** argv ) {
     {
           Mat frame;
           capture >> frame;
-          
-          
           if( frame.empty() ) break; // Ende vom stream
-          imshow("Frame", frame);
+          imshow(p, frame);
           
           if( waitKey(10) == 27 ) break; // Stopp über Escape
     }
