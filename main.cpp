@@ -10,10 +10,13 @@ using namespace cv;
 String eyes_cascade_name = "haarcascade_eye.xml";
 CascadeClassifier eyes_cascade;
 
-string window_name = "Frame";
+std::string window_name = "Test";
+
 
 int main( int argc, char** argv ) {
   
+  
+
   VideoCapture capture;
     // Window Name --> Frame 
     // --> every other image function should work on Frame
@@ -21,7 +24,8 @@ int main( int argc, char** argv ) {
     const char * p = window_name.c_str();
     cvNamedWindow(p);
     moveWindow(p,1500,2000);
-
+//Resize Frame window --> geht noch nicht
+  cv::resizeWindow(window_name, 10, 20);
     ///0 öffnet die default cam
     if(!capture.open(0))
         return 0;
