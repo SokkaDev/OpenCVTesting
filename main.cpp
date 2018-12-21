@@ -8,7 +8,8 @@ using namespace cv;
 
 /** Function Headers */
 void detectAndDisplay( Mat frame );
-
+void readProcess_Stop();
+void readProcess_Start();
 /** Global variables */
 String face_cascade_name = "haarcascade_frontalface_alt.xml";
 String eyes_cascade_name = "haarcascade_eye_tree_eyeglasses.xml";
@@ -32,7 +33,6 @@ int main( void )
 
     //Move Window right bottom
     moveWindow(p,1500,2000);
-
 
     //-- 1. Load the cascades
     if( !face_cascade.load( face_cascade_name ) ){ cout << "--(!)Error loading face cascade\n"; return -1; };
@@ -67,9 +67,15 @@ void detectAndDisplay( Mat frame )
 
     cvtColor( frame, frame_gray, COLOR_BGR2GRAY );
     equalizeHist( frame_gray, frame_gray );
-
+    
     //Detect faces
     face_cascade.detectMultiScale( frame_gray, faces, 1.1, 2, 0|CASCADE_SCALE_IMAGE, Size(30, 30) );
+
+    if(faces.empty()){
+        readProcess_Stop();
+    }
+    else 
+      {
 
     for( size_t i = 0; i < faces.size(); i++ )
     {
@@ -81,16 +87,41 @@ void detectAndDisplay( Mat frame )
 
         // Filter eyes from face
         eyes_cascade.detectMultiScale( faceROI, eyes, 1.1, 2, 0 |CASCADE_SCALE_IMAGE, Size(30, 30) );
-
+        
         for( size_t j = 0; j < eyes.size(); j++ )
         {
             Point eye_center( faces[i].x + eyes[j].x + eyes[j].width/2, faces[i].y + eyes[j].y + eyes[j].height/2 );
             int radius = cvRound( (eyes[j].width + eyes[j].height)*0.25 );
             circle( frame, eye_center, radius, Scalar( 255, 0, 0 ), 4, 8, 0 );
-            // WRITE WHAT SHOULD HAPPEN IF FACE WAS RECOGNIZED HERE
-            //-->
+            
+            readProcess_Start();          
+            
+           
+          
         }
     }
+      }
     // Frame
     imshow( window_name, frame );
+}
+
+
+
+void readProcess_Stop(){
+    //erstellt im Ordner eine ProcessInfo Datei
+    system("ps -a > ./processinfo.txt");
+
+    //SLoop which itaretes through the txt file and searches the
+    // spotify PID number
+
+
+    //kill -STOP [INSERTSPOTIFY PID HERE WITHOUT BRACKETS]
+
+}
+
+
+void readProcess_Start(){
+
+
+
 }
