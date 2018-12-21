@@ -1,4 +1,4 @@
-# OpenCVTesting
+# OpenCV Face Detection + Pause Process by Name
 Camera Recognition + Pausing Spotify
 
 
@@ -8,8 +8,8 @@ Install OpenCv (linux) : https://docs.opencv.org/3.4/d7/d9f/tutorial_linux_insta
 Install OpenCv(Windows) : https://www.learnopencv.com/install-opencv3-on-windows/
 
 
-This Program uses the Face-Detection Algorithm from openCv ( haarcascade ) to recognize wheter the user is watching his Screen
-or not.
+This Program uses the Face-Detection Algorithm from openCv ( haarcascade ) to recognize wheter the user is watching his Screen or not. If the User is not watching the Screen , the Programm automatically Stops Spotify.
+When the Face is detected again it continues the Program.
 
 ###Here you can find the original xml Files which I used to detect a face:
 https://github.com/opencv/opencv/tree/master/data/haarcascades
@@ -41,8 +41,5 @@ while(myfile >> tmp ){
     }
  ```
 
-## Program right now just for Linux based Systems
-
-Should Pause Spotify if no face was detected.
-
+### Program right now just for Linux based Systems
 
