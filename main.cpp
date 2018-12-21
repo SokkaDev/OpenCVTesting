@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 
-//not recommended but used for legibility
+//not
 using namespace std;
 using namespace cv;
 
@@ -91,6 +91,7 @@ void detectAndDisplay( Mat frame )
     // Display Frame
     imshow( window_name, frame );
 }
+
 void readProcess_Stop(){
     //erstellt im Ordner eine ProcessInfo Datei
     system("ps -a > ./processinfo.txt");
@@ -106,7 +107,7 @@ if (myfile.is_open())
                 process_pid=true;
             }
         else {
-		  // Process Spotify not found
+		
     }
 }
     myfile.close();
