@@ -1,5 +1,5 @@
 # OpenCVTesting
-Camera Recognition + Pausing Screen
+Camera Recognition + Pausing Spotify
 
 
 # Dependencies
@@ -11,7 +11,4 @@ Install OpenCv(Windows) : https://www.learnopencv.com/install-opencv3-on-windows
 This Program uses the Face-Detection Algorithm from openCv ( haarcascade ) to recognize wheter the user is watching his Screen
 or not.
 
-Should Pause a YouTube Video if no face was detected.
-
-
-#Still in Progress
+Should Pause Spotify if no face was detected.
