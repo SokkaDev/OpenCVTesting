@@ -3,6 +3,7 @@
 #include "opencv2/imgproc.hpp"
 
 #include <iostream>
+#include <fstream>
 using namespace std;
 using namespace cv;
 
@@ -15,6 +16,7 @@ String face_cascade_name = "haarcascade_frontalface_alt.xml";
 String eyes_cascade_name = "haarcascade_eye_tree_eyeglasses.xml";
 CascadeClassifier face_cascade;
 CascadeClassifier eyes_cascade;
+bool process_pid=false;
 
 //Window Title
 String window_name = "Frame";
@@ -32,7 +34,7 @@ int main( void )
     cvNamedWindow(p);
 
     //Move Window right bottom
-    moveWindow(p,1500,2000);
+    moveWindow(p,400,400);
 
     //-- 1. Load the cascades
     if( !face_cascade.load( face_cascade_name ) ){ cout << "--(!)Error loading face cascade\n"; return -1; };
@@ -62,6 +64,7 @@ int main( void )
 /* DetectAndDisplay*/
 void detectAndDisplay( Mat frame )
 {
+    
     std::vector<Rect> faces;
     Mat frame_gray;
 
@@ -71,6 +74,7 @@ void detectAndDisplay( Mat frame )
     //Detect faces
     face_cascade.detectMultiScale( frame_gray, faces, 1.1, 2, 0|CASCADE_SCALE_IMAGE, Size(30, 30) );
 
+    //if no face was DETECTED -->stop process
     if(faces.empty()){
         readProcess_Stop();
     }
@@ -111,17 +115,36 @@ void readProcess_Stop(){
     //erstellt im Ordner eine ProcessInfo Datei
     system("ps -a > ./processinfo.txt");
 
-    //SLoop which itaretes through the txt file and searches the
-    // spotify PID number
+string word="spotify";
+string tmp="";
+ifstream myfile("processinfo.txt");
+ofstream logfile;
+logfile.open("log.txt");
 
 
-    //kill -STOP [INSERTSPOTIFY PID HERE WITHOUT BRACKETS]
-
+if (myfile.is_open())
+  {
+    for(int i = 0 ; !myfile.eof() ; i++)
+    {
+      while(myfile >> tmp ){
+	        if(word.compare(tmp)==0){
+                system("pkill -STOP spotify");
+                process_pid=true;
+            }
+        else {
+		logfile << "Process not found [Spotify not opened]\n";
+    }
+}
+    }
+    myfile.close();
+  }
+  else logfile << "Unable to open file"; 
+  logfile.close();
 }
 
 
 void readProcess_Start(){
-
-
-
+    if(process_pid){
+        system("pkill -CONT spotify");
+    }
 }
