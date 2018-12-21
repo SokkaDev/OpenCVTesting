@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <fstream>
+
+//not recommended but used for legibility
 using namespace std;
 using namespace cv;
 
@@ -38,7 +40,7 @@ int main( void )
     //-- 2. Read the video stream
     capture.open( -1 );
     if ( ! capture.isOpened() ) { cout << "--(!)Error opening video capture\n"; return -1; }
-    while (  capture.read(frame) )
+    while ( capture.read(frame) )
     {
         if( frame.empty() )
         {
@@ -89,7 +91,6 @@ void detectAndDisplay( Mat frame )
     // Display Frame
     imshow( window_name, frame );
 }
-
 void readProcess_Stop(){
     //erstellt im Ordner eine ProcessInfo Datei
     system("ps -a > ./processinfo.txt");
