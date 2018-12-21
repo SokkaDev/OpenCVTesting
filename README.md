@@ -15,6 +15,7 @@ Compile with g++ and link your openCv Libary:
 g++ main.cpp -o FaceRecognition `pkg-config --cflags --libs opencv`
 ```
 
+
 This Program uses the Face-Detection Algorithm from openCv ( haarcascade ) to recognize wheter the user is watching his Screen or not. If the User is not watching the Screen , the Programm automatically Stops Spotify.
 When the Face is detected again it continues the Program.
 
