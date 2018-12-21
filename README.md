@@ -11,4 +11,8 @@ Install OpenCv(Windows) : https://www.learnopencv.com/install-opencv3-on-windows
 This Program uses the Face-Detection Algorithm from openCv ( haarcascade ) to recognize wheter the user is watching his Screen
 or not.
 
+# Program right now just for Linux based Systems
+
 Should Pause Spotify if no face was detected.
+
+
