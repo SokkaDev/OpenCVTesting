@@ -30,14 +30,16 @@ The Code creates a file (processinfo.txt) and overwrites it (as long as the prog
 `system("ps -a > ./processinfo.txt");`
 
 Than a Loop goes through every single Word of that File and searches for the Process spotify (word):
-`while(myfile >> tmp ){
+```
+while(myfile >> tmp ){
 	        if(word.compare(tmp)==0){
                 system("pkill -STOP spotify");
                 process_pid=true;
             }
         else {
 		  process_pid=false;
-    }`
+    }
+ ```
 
 ## Program right now just for Linux based Systems
 
