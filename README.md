@@ -23,9 +23,7 @@ When the Face is detected again it continues the Program.
 https://github.com/opencv/opencv/tree/master/data/haarcascades
 
 ## 1. How to Pause/Continue Process by Name [Linux]
-I used system-based code line to pause the Spotify Process **but only when** *process_pid **is true**
-(*process_pid is a boolean and turn true when the spotify Process is running. --> Step 2*)
-:
+I used a system-based code line to pause the Spotify Process after the Check in *Step 2* :
 `system("pkill -STOP spotify");`
 
  And another system based code line to continue the Process:
